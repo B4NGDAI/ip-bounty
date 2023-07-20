@@ -102,10 +102,10 @@ function MissionStart()
 		local modelNumeroRandom = math.random(15)
 		local modelRandom = Config.models[modelNumeroRandom].hash
 		local _hash = GetHashKey(modelRandom)
-		lib.requestModel(_hash)
+		RequestModel(_hash)
 
 		if not HasModelLoaded(_hash) then
-			lib.requestModel(_hash)
+			RequestModel(_hash)
 		end
 
 		while not HasModelLoaded(_hash) do
