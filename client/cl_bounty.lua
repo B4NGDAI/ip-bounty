@@ -141,7 +141,11 @@ function MissionStart()
 			Wait(5)
 			if starting then
 				if timer <= 0 then
-					TriggerEvent("ip-core:failmissioNotifY", "Time is up!", "You have failed to complete the mission in time.", 4000)
+					if Config.DefaultNotification then
+						RSGCore.Functions.Notification('Time is up!, You have failed to complete the mission in time.', 'inform', 4000)
+					else
+						TriggerEvent("ip-core:failmissioNotifY", "Time is up!", "You have failed to complete the mission in time.", 4000)
+					end
 					StopMission()
 				else
 					for k,v in pairs(createdped) do
@@ -159,8 +163,12 @@ function MissionStart()
 							local pedCoords = GetEntityCoords(v)
 							local playerCoords = GetEntityCoords(pl)
 							local distance = #(pedCoords - playerCoords)
-							if distance < 100.0 then
-								TriggerEvent("ip-core:ShowBasicTopNotification", "Kill All The Targets", 4000)
+							if distance < 25.0 then
+								if Config.DefaultNotification then
+									RSGCore.Functions.Notification('Kill All The Targets', 'inform', 4000)
+								else
+									TriggerEvent("ip-core:ShowBasicTopNotification", "Kill All The Targets", 4000)
+								end
 							end
 						end
 					end
@@ -171,7 +179,12 @@ function MissionStart()
 					else
 						if allTargetsDead == true then
 							-- All targets are dead, show success notification and reward player
-							TriggerEvent("ip-core:ShowBasicTopNotification", "success knock out all the opponents", 4000)
+							if Config.DefaultNotification then
+								RSGCore.Functions.Notification('success knock out all the opponents', 'success', 4000)
+							else
+								--put your own notif here
+								TriggerEvent("ip-core:ShowBasicTopNotification", "success knock out all the opponents", 4000)
+							end
 							TriggerServerEvent('ip_bountyhunting:AddSomeMoney')
 							Wait(4000)
 							StopMission()
@@ -245,8 +258,11 @@ function StartDialog()
 		local timetocheck = 600
 		while timetocheck >= 0 do
 			Wait(0)
-			TriggerEvent("ip-core:ShowTopNotification", "BOUNTY HUNTER", Config.KillingMessage, 5000)
-			--DrawTxt(Config.KillingMessage, 0.50, 0.90, 0.7, 0.7, true, 255, 255, 255, 255, true)
+			if Config.DefaultNotification then
+				RSGCore.Functions.Notification(Config.KillingMessage, 'inform', 5000)
+			else
+				TriggerEvent("ip-core:ShowTopNotification", "BOUNTY HUNTER", Config.KillingMessage, 5000)
+			end
 			timetocheck = timetocheck - 1
 		end
 	end)
@@ -263,41 +279,19 @@ RegisterNetEvent('ip-bounty:client:menu', function()
 		MissionStart()
 		StartDialog()
 	elseif not hasItem then
-		TriggerEvent("ip-core:ShowTopNotification", "You Dont Have a Bounty Ticket", "To Start Bounty", 10000)
+		if Config.DefaultNotification then
+			RSGCore.Functions.Notification('you need a ticket to start bounty', 'inform', 5000)
+		else
+			TriggerEvent("ip-core:ShowTopNotification", "You Dont Have a Bounty Ticket", "To Start Bounty", 5000)
+		end
 	elseif oncd == true then
-		TriggerEvent("ip-core:ShowTopNotification", "On cooldown", "To Start Bounty", 10000)
+		if Config.DefaultNotification then
+			RSGCore.Functions.Notification('bounty on cooldown', 'inform', 5000)
+		else
+			TriggerEvent("ip-core:ShowTopNotification", "On cooldown", "To Start Bounty", 5000)
+		end
 	end
 end)
-
--- CreateThread(function()
--- 	while true do
--- 		Wait(10)
--- 		local coords = GetEntityCoords(PlayerPedId())
--- 		for _, bountyCoords in pairs(Config.LocationsB) do
--- 			local distance = #(coords - bountyCoords)
--- 			if distance < 1.0 then
--- 				local label = CreateVarString(10, 'LITERAL_STRING', "Bounty")
---                 PromptSetActiveGroupThisFrame(BountyGroup, label)
---                 if Citizen.InvokeNative(0xC92AC953F0A982AE, BountyPrompt) and not pressing then
--- 					local hasItem = RSGCore.Functions.HasItem(Config.TicketBounty, 1)
--- 					if hasItem and oncd == false then
--- 						StopMission()
--- 						pressing = true
--- 						TriggerServerEvent('ip-bounty:server:removeitem', Config.TicketBounty, 1)
--- 						Wait(1000)
--- 						oncd = true
--- 						MissionStart()
--- 						StartDialog()
--- 					elseif not hasItem then
--- 						TriggerEvent("ip-core:ShowTopNotification", "You Dont Have a Bounty Ticket", "To Start Bounty", 10000)
--- 					elseif oncd == true then
--- 						TriggerEvent("ip-core:ShowTopNotification", "On cooldown", "To Start Bounty", 10000)
--- 					end
--- 				end
--- 			end
--- 		end
--- 	end
--- end)
 
 CreateThread(function()
 	while true do

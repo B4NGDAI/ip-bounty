@@ -10,6 +10,8 @@ Config.DeadMessage = "You have died"
 Config.Price = math.random(15, 55)
 Config.cooldowntimer = 15 -- minutes
 
+Config.DefaultNotification = true --set to false if you want use your own notification
+
 Config.TicketBounty = 'bounty_ticket'
 
 Config.LocationsB = {
