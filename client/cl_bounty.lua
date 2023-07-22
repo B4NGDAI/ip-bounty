@@ -142,7 +142,7 @@ function MissionStart()
 			if starting then
 				if timer <= 0 then
 					if Config.DefaultNotification then
-						RSGCore.Functions.Notification('Time is up!, You have failed to complete the mission in time.', 'inform', 4000)
+						RSGCore.Functions.Notify('Time is up!, You have failed to complete the mission in time.', 'inform', 4000)
 					else
 						TriggerEvent("ip-core:failmissioNotifY", "Time is up!", "You have failed to complete the mission in time.", 4000)
 					end
@@ -165,7 +165,7 @@ function MissionStart()
 							local distance = #(pedCoords - playerCoords)
 							if distance < 25.0 then
 								if Config.DefaultNotification then
-									RSGCore.Functions.Notification('Kill All The Targets', 'inform', 4000)
+									RSGCore.Functions.Notify('Kill All The Targets', 'inform', 4000)
 								else
 									TriggerEvent("ip-core:ShowBasicTopNotification", "Kill All The Targets", 4000)
 								end
@@ -180,7 +180,7 @@ function MissionStart()
 						if allTargetsDead == true then
 							-- All targets are dead, show success notification and reward player
 							if Config.DefaultNotification then
-								RSGCore.Functions.Notification('success knock out all the opponents', 'success', 4000)
+								RSGCore.Functions.Notify('success knock out all the opponents', 'success', 4000)
 							else
 								--put your own notif here
 								TriggerEvent("ip-core:ShowBasicTopNotification", "success knock out all the opponents", 4000)
@@ -259,7 +259,7 @@ function StartDialog()
 		while timetocheck >= 0 do
 			Wait(0)
 			if Config.DefaultNotification then
-				RSGCore.Functions.Notification(Config.KillingMessage, 'inform', 5000)
+				RSGCore.Functions.Notify(Config.KillingMessage, 'inform', 5000)
 			else
 				TriggerEvent("ip-core:ShowTopNotification", "BOUNTY HUNTER", Config.KillingMessage, 5000)
 			end
@@ -280,13 +280,13 @@ RegisterNetEvent('ip-bounty:client:menu', function()
 		StartDialog()
 	elseif not hasItem then
 		if Config.DefaultNotification then
-			RSGCore.Functions.Notification('you need a ticket to start bounty', 'inform', 5000)
+			RSGCore.Functions.Notify('you need a ticket to start bounty', 'inform', 5000)
 		else
 			TriggerEvent("ip-core:ShowTopNotification", "You Dont Have a Bounty Ticket", "To Start Bounty", 5000)
 		end
 	elseif oncd == true then
 		if Config.DefaultNotification then
-			RSGCore.Functions.Notification('bounty on cooldown', 'inform', 5000)
+			RSGCore.Functions.Notify('bounty on cooldown', 'inform', 5000)
 		else
 			TriggerEvent("ip-core:ShowTopNotification", "On cooldown", "To Start Bounty", 5000)
 		end
