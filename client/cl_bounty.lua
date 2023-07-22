@@ -123,7 +123,7 @@ function MissionStart()
 		gpsz = item.z
 		GiveWeaponToPed_2(createdped[k], arma, 50, true, true, 1, false, 0.5, 1.0, 1.0, true, 0, 0)
 		SetCurrentPedWeapon(createdped[k], arma, true)
-		TaskCombatPed(createdped[k], cache.ped)
+		TaskCombatPed(createdped[k], PlayerPedId())
 		--Give weapons to ped and equip them
 		count[k] = createdped[k]
 	end
@@ -272,7 +272,7 @@ end)
 -- CreateThread(function()
 -- 	while true do
 -- 		Wait(10)
--- 		local coords = GetEntityCoords(cache.ped)
+-- 		local coords = GetEntityCoords(PlayerPedId())
 -- 		for _, bountyCoords in pairs(Config.LocationsB) do
 -- 			local distance = #(coords - bountyCoords)
 -- 			if distance < 1.0 then
