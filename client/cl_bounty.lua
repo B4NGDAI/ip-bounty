@@ -209,9 +209,19 @@ function GameTimer()
             if timer > 0 then
                 timer = timer - 1
             end
+
+            -- Check if all targets are dead
+            allTargetsDead = true  -- Assume all targets are dead
+            for k, v in pairs(createdped) do
+                if not IsEntityDead(v) then
+                    allTargetsDead = false  -- If any target is alive, set to false
+                    break
+                end
+            end
         end
     end)
 end
+
 
 function DrawTimer()
     local minutes = math.floor(timer / 60)
@@ -254,19 +264,22 @@ function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
 end
 
 function StartDialog()
-	Citizen.CreateThread(function()
-		local timetocheck = 600
-		while timetocheck >= 0 do
-			Wait(0)
-			if Config.DefaultNotification then
-				RSGCore.Functions.Notify(Config.KillingMessage, 'inform', 5000)
-			else
-				TriggerEvent("ip-core:ShowTopNotification", "BOUNTY HUNTER", Config.KillingMessage, 5000)
-			end
-			timetocheck = timetocheck - 1
-		end
-	end)
+    Citizen.CreateThread(function()
+        local timetocheck = 600
+        while timetocheck >= 0 do
+            Wait(5000)  -- Wait for 5 seconds before displaying the message again
+            if timetocheck % 60 == 0 then
+                if Config.DefaultNotification then
+                    RSGCore.Functions.Notify(Config.KillingMessage, 'inform', 5000)
+                else
+                    TriggerEvent("ip-core:ShowTopNotification", "BOUNTY HUNTER", Config.KillingMessage, 5000)
+                end
+            end
+            timetocheck = timetocheck - 1
+        end
+    end)
 end
+
 
 RegisterNetEvent('ip-bounty:client:menu', function()
 	local hasItem = RSGCore.Functions.HasItem(Config.TicketBounty, 1)
